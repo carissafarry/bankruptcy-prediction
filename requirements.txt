@@ -7,3 +7,5 @@ jupyter
 torch
 streamlit
 shap
+imbalanced-learn
+xgboost
