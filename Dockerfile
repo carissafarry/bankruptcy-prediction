@@ -13,12 +13,14 @@ RUN mkdir -p /var/tmp && chmod 1777 /var/tmp \
 
 # Copy & install dependencies
 COPY ./requirements.txt /requirements.txt
+COPY ./requirements-extra.txt /requirements-extra.txt
 
 # RUN apt-get update
 # RUN apt-get install sudo -y build-essential \
 #     python3-pip \
 #     python3-dev
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r /requirements-extra.txt
 
 RUN apt-get clean
 
