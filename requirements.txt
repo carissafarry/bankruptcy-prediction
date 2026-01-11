@@ -9,3 +9,5 @@ streamlit
 shap
 imbalanced-learn
 xgboost
+lightgbm
+ngboost
