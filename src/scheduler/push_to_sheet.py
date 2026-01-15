@@ -15,8 +15,37 @@ COL_SOURCE = 4
 COL_YEAR = 5
 COL_QUARTER = 6
 COL_TITLE = 7
-COL_LINK = 8
-SCRAPING_LIMIT = 20
+COL_IS_NEGATIVE = 8
+COL_NEG_REASON = 9
+COL_LINK = 10
+SCRAPING_LIMIT = 50
+
+NEGATIVE_KEYWORDS = [
+    "gagal bayar", "kredit macet", "non performing loan", "npl",
+    "likuiditas", "kerugian", "rugi", "penurunan laba",
+    "bangkrut", "pailit",
+    "fraud", "penipuan", "korupsi", "skandal",
+    "pidana", "tersangka", "ditahan", "penyidikan",
+    "denda", "sanksi", "dibekukan", "pencabutan izin",
+    "penutupan", "tutup", "dihentikan",
+    "krisis", "guncangan", "gagal", "masalah",
+]
+
+
+def check_negative_news(title: str):
+    """
+    Return:
+      (is_negative: bool, reason: str | None)
+    """
+    if not isinstance(title, str):
+        return False, None
+
+    t = title.lower()
+    for keyword in NEGATIVE_KEYWORDS:
+        if keyword in t:
+            return True, keyword
+        
+    return False, None
 
 def get_sheet():
     """
@@ -106,6 +135,7 @@ def push_data():
                 skipped += 1
             continue
 
+        is_negative, neg_keyword = check_negative_news(title)
         row = [
             first_seen_at,
             last_seen_at,
@@ -114,6 +144,8 @@ def push_data():
             a.get("quarter"),
             a.get("source"),
             title,
+            is_negative,
+            neg_keyword,
             link
         ]
 
