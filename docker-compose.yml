@@ -4,6 +4,9 @@ services:
   app:
     build:
       context: .
+      dockerfile: docker/Dockerfile.ml
+    image: bankruptcy-ml
+    container_name: bankruptcy-ml
     ports:
       - "8000:8000"
     volumes:
