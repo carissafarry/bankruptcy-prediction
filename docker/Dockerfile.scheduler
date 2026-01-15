@@ -5,6 +5,6 @@ COPY src/scheduler/push_to_sheet.py .
 
 RUN pip install --no-cache-dir -r scheduler.txt
 
-WORKDIR /app
+WORKDIR /src
 
 CMD ["python", "push_to_sheet.py"]
