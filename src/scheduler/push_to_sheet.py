@@ -1,35 +1,11 @@
 import os
-import time
+from config import CONFIG
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from scraper.google_news import scrape_google_news
 
 import gspread
 from google.oauth2.service_account import Credentials
-
-
-COL_FIRST_SEEN = 1
-COL_LAST_SEEN = 2
-COL_PUBLISHED_AT = 3
-COL_SOURCE = 4
-COL_YEAR = 5
-COL_QUARTER = 6
-COL_TITLE = 7
-COL_IS_NEGATIVE = 8
-COL_NEG_KEYWORD = 9
-COL_LINK = 10
-SCRAPING_LIMIT = 50
-
-NEGATIVE_KEYWORDS = [
-    "gagal bayar", "kredit macet", "non performing loan", "npl",
-    "likuiditas", "kerugian", "rugi", "penurunan laba",
-    "bangkrut", "pailit",
-    "fraud", "penipuan", "korupsi", "skandal",
-    "pidana", "tersangka", "ditahan", "penyidikan",
-    "denda", "sanksi", "dibekukan", "pencabutan izin",
-    "penutupan", "tutup", "dihentikan",
-    "krisis", "guncangan", "gagal", "masalah",
-]
 
 
 def check_negative_news(title: str):
@@ -41,7 +17,7 @@ def check_negative_news(title: str):
         return False, None
 
     t = title.lower()
-    for keyword in NEGATIVE_KEYWORDS:
+    for keyword in CONFIG["NEGATIVE_KEYWORDS"]:
         if keyword in t:
             return True, keyword
         
@@ -57,22 +33,17 @@ def get_sheet():
     ]
 
     # Path credential (mounted by docker / github actions)
-    CREDS_PATH = "service_account.json"
-
-    if not os.path.exists(CREDS_PATH):
+    if not os.path.exists(CONFIG["GOOGLE_CREDS_PATH"]):
         raise FileNotFoundError("service_account.json not found")
 
     creds = Credentials.from_service_account_file(
-        CREDS_PATH,
+        CONFIG["GOOGLE_CREDS_PATH"],
         scopes=SCOPES
     )
 
     client = gspread.authorize(creds)
 
-    SPREADSHEET_NAME = "bank_news_scrapping_data"
-    SHEET_NAME = "Sheet1"
-
-    sheet = client.open(SPREADSHEET_NAME).worksheet(SHEET_NAME)
+    sheet = client.open(CONFIG["SPREADSHEET_NAME"]).worksheet(CONFIG["SHEET_NAME"])
     return sheet
 
 def get_existing_link_map(sheet):
@@ -80,7 +51,7 @@ def get_existing_link_map(sheet):
     Returns:
       dict: { link: row_number }
     """
-    links = sheet.col_values(COL_LINK)  # kolom link
+    links = sheet.col_values(CONFIG["COL_LINK"])  # kolom link
     return {
         link: idx + 1
         for idx, link in enumerate(links)
@@ -95,7 +66,7 @@ def push_data():
         return
 
     try:
-        articles = scrape_google_news(limit=SCRAPING_LIMIT)
+        articles = scrape_google_news(limit=CONFIG["SCRAPING_LIMIT"])
     except Exception as e:
         print("Scraping failed: ", e)
         return
@@ -106,7 +77,7 @@ def push_data():
 
     existing_link_map = get_existing_link_map(sheet)
     existing_links = set(existing_link_map.keys())
-    now = datetime.now(ZoneInfo("Asia/Jakarta")).strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.now(ZoneInfo(CONFIG["TIMEZONE"])).strftime("%Y-%m-%d %H:%M:%S")
     first_seen_at = now
     last_seen_at = now
 
