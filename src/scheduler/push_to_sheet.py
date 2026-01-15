@@ -8,6 +8,13 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 
+COL_FIRST_SEEN = 1
+COL_LAST_SEEN = 2
+COL_PUBLISHED_AT = 3
+COL_SOURCE = 4
+COL_TITLE = 5
+COL_LINK = 6
+
 def get_sheet():
     """
     Authenticate and return Google Sheet worksheet
@@ -41,7 +48,7 @@ def get_existing_link_map(sheet):
     Returns:
       dict: { link: row_number }
     """
-    links = sheet.col_values(5)  # kolom link
+    links = sheet.col_values(COL_LINK)  # kolom link
     return {
         link: idx + 1
         for idx, link in enumerate(links)
@@ -65,8 +72,8 @@ def push_data():
         print("No articles scraped")
         return
 
-    existing_links = set(sheet.col_values(5))
     existing_link_map = get_existing_link_map(sheet)
+    existing_links = set(existing_link_map.keys())
     now = datetime.now(ZoneInfo("Asia/Jakarta")).strftime("%Y-%m-%d %H:%M:%S")
     first_seen_at = now
     last_seen_at = now
@@ -88,8 +95,8 @@ def push_data():
         if link in existing_links:
             row_idx = existing_link_map[link]
             try:
-                sheet.update_cell(row_idx, 2, last_seen_at)
-                sheet.update_cell(row_idx, 5, published_at)
+                sheet.update_cell(row_idx, COL_LAST_SEEN, last_seen_at)
+                sheet.update_cell(row_idx, COL_PUBLISHED_AT, published_at)
                 updated += 1
             except Exception as e:
                 print("Failed to update published_at: ", e)
