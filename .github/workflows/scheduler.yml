@@ -1,0 +1,24 @@
+name: Daily Google Sheets Scheduler
+
+on:
+  schedule:
+    - cron: "0 1 * * *"   # 08:00 WIB
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build docker scheduler image
+        run: docker build -f docker/Dockerfile.scheduler -t sheets-scheduler .
+
+      - name: Run scheduler container
+        run: |
+          echo "${{ secrets.GOOGLE_CREDS }}" > service_account.json
+          docker run --rm \
+            -v ${{ github.workspace }}/service_account.json:/app/service_account.json \
+            sheets-scheduler

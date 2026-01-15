@@ -1,0 +1,10 @@
+FROM python:3.11-slim
+
+COPY requirements/scheduler.txt .
+COPY src/scheduler/push_to_sheet.py .
+
+RUN pip install --no-cache-dir -r scheduler.txt
+
+WORKDIR /app
+
+CMD ["python", "push_to_sheet.py"]
