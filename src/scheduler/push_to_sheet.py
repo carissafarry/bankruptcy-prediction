@@ -110,6 +110,9 @@ def push_data():
     first_seen_at = now
     last_seen_at = now
 
+    rows_to_insert = []
+    updates = []
+    
     inserted = 0
     updated = 0
     skipped = 0
@@ -127,18 +130,28 @@ def push_data():
 
         if link in existing_links:
             row_idx = existing_link_map[link]
-            try:
-                sheet.update_cell(row_idx, COL_LAST_SEEN, last_seen_at)
-                sheet.update_cell(row_idx, COL_PUBLISHED_AT, published_at)
-                sheet.update_cell(row_idx, COL_IS_NEGATIVE, is_negative)
-                sheet.update_cell(row_idx, COL_NEG_KEYWORD, neg_keyword)
-                updated += 1
-            except Exception as e:
-                print("Failed to update published_at: ", e)
-                skipped += 1
+            updates.append({
+                "range": f"B{row_idx}",   # last_seen_at
+                "values": [[now]]
+            })
+            updates.append({
+                "range": f"E{row_idx}",   # published_at
+                "values": [[a["published_at"]]]
+            })
+            updated += 1
             continue
 
-        row = [
+            # try:
+            #     sheet.update_cell(row_idx, COL_LAST_SEEN, last_seen_at)
+            #     sheet.update_cell(row_idx, COL_PUBLISHED_AT, published_at)
+            #     sheet.update_cell(row_idx, COL_IS_NEGATIVE, is_negative)
+            #     sheet.update_cell(row_idx, COL_NEG_KEYWORD, neg_keyword)
+            #     updated += 1
+            # except Exception as e:
+            #     print("Failed to update published_at: ", e)
+            #     skipped += 1
+
+        rows_to_insert.append([
             first_seen_at,
             last_seen_at,
             published_at,
@@ -149,19 +162,39 @@ def push_data():
             is_negative,
             neg_keyword,
             link
-        ]
+        ])
+        inserted += 1
 
+    insert_success = False
+    if rows_to_insert:
         try:
-            sheet.append_row(row, value_input_option="USER_ENTERED")
-            inserted += 1
-            time.sleep(1) # to avoid hitting rate limits
+            sheet.append_rows(
+                rows_to_insert,
+                value_input_option="USER_ENTERED"
+            )
+            insert_success = True
         except Exception as e:
-            print("Failed to append row: ", e)
-            skipped += 1
-            continue
+            print("INSERT FAILED, SKIPPING UPDATE:", e)
+            return
+
+    if insert_success and updates:
+        try:
+            sheet.batch_update(updates)
+        except Exception as e:
+            print("UPDATE FAILED:", e)
+            return
+        
+        # try:
+        #     sheet.append_row(row, value_input_option="USER_ENTERED")
+        #     inserted += 1
+        #     time.sleep(1) # to avoid hitting rate limits
+        # except Exception as e:
+        #     print("Failed to append row: ", e)
+        #     skipped += 1
+        #     continue
 
     print(
-        f"Job finished! | scraped={len(articles)} | inserted={inserted} | updated={updated} | skipped={skipped}"
+        f"Job finished! | scraped={len(articles)} | inserted={inserted} | updated={updated if insert_success else 0} | skipped={skipped}"
     )
 
 if __name__ == "__main__":
