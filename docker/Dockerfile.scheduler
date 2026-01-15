@@ -7,6 +7,8 @@ COPY requirements/scheduler.txt ./scheduler.txt
 RUN pip install --no-cache-dir -r scheduler.txt
 
 # copy script
-COPY src/ /app/
+COPY src/config.py ./config.py
+COPY src/scheduler/push_to_sheet.py ./push_to_sheet.py
+COPY src/scraper ./scraper
 
 CMD ["python", "push_to_sheet.py"]
