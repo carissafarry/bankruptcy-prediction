@@ -68,8 +68,11 @@ def push_data():
     existing_links = set(sheet.col_values(5))
     existing_link_map = get_existing_link_map(sheet)
     now = datetime.now(ZoneInfo("Asia/Jakarta")).strftime("%Y-%m-%d %H:%M:%S")
+    first_seen_at = now
+    last_seen_at = now
 
     inserted = 0
+    updated = 0
     skipped = 0
 
     for a in articles:
@@ -85,18 +88,20 @@ def push_data():
         if link in existing_links:
             row_idx = existing_link_map[link]
             try:
-                sheet.update_cell(row_idx, 4, published_at)
-                skipped += 1
+                sheet.update_cell(row_idx, 2, last_seen_at)
+                sheet.update_cell(row_idx, 5, published_at)
+                updated += 1
             except Exception as e:
                 print("Failed to update published_at: ", e)
                 skipped += 1
             continue
 
         row = [
-            now,
-            title,
-            a.get("source"),
+            first_seen_at,
+            last_seen_at,
             published_at,
+            a.get("source"),
+            title,
             link
         ]
 
@@ -110,7 +115,7 @@ def push_data():
             continue
 
     print(
-        f"Job finished! | inserted={inserted} | skipped={skipped} | scraped={len(articles)}"
+        f"Job finished! | scraped={len(articles)} | inserted={inserted} | updated={updated} | skipped={skipped}"
     )
 
 if __name__ == "__main__":
