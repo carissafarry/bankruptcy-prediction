@@ -22,33 +22,37 @@ def scrape_google_news(limit=10):
     articles = []
     cards = soup.select("article")
 
-    for card in cards[:limit]:
-        # title
-        title_tag = card.find("h3")
+    for card in cards:
+        # title + link
+        title_tag = card.select_one("a.JtKRv")
         if not title_tag:
             continue
+
         title = title_tag.get_text(strip=True)
+        href = title_tag.get("href")
 
-        # link (relative -> absolute)
-        link_tag = title_tag.find("a")
-        if not link_tag or not link_tag.get("href"):
+        if not title or not href:
             continue
-        link = urljoin(BASE_URL, link_tag["href"].replace("./", ""))
 
-        # source (media)
-        source_tag = card.find("div", attrs={"data-n-tid": True})
+        link = urljoin(BASE_URL, href.replace("./", ""))
+
+        # source
+        source_tag = card.select_one(".vr1PYe")
         source = source_tag.get_text(strip=True) if source_tag else None
 
-        # published time (string, bukan datetime)
-        time_tag = card.find("time")
+        # published time
+        time_tag = card.select_one("time.hvbAAd")
         published_at = time_tag.get_text(strip=True) if time_tag else None
 
         articles.append({
             "title": title,
             "link": link,
             "source": source,
-            "published_at": published_at
+            "published_at": published_at,
         })
+
+        if len(articles) >= limit:
+            break
 
     return articles
 
