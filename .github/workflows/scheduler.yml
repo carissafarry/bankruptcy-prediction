@@ -2,7 +2,7 @@ name: Daily Google Sheets Scheduler
 
 on:
   schedule:
-    - cron: "0 1 * * *"   # 08:00 WIB
+    - cron: "0 * * * *"   # tiap jam (UTC)
   workflow_dispatch:
 
 jobs:
