@@ -1,5 +1,6 @@
 import os
-from datetime import datetime, time
+import time
+from datetime import datetime
 from scraper.google_news import scrape_google_news
 
 import gspread
