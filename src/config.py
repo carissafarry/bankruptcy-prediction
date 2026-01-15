@@ -7,7 +7,10 @@ PREFIX = "APP_"
 
 def _cast(value, cast):
     if cast is list:
-        return json.loads(value)
+        try:
+            return json.loads(value)
+        except Exception:
+            return [v.strip() for v in value.split(",") if v.strip()]
     return cast(value)
 
 def load_env(prefix=PREFIX):

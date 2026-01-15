@@ -22,6 +22,10 @@ jobs:
           ${{ secrets.GOOGLE_CREDS }}
           EOF
 
+      - name: Dump ALL env to file
+        run: |
+          env > .env.runtime
+
       - name: Debug creds file
         run: |
           ls -lah service_account.json
@@ -30,5 +34,6 @@ jobs:
       - name: Run scheduler container
         run: |
           docker run --rm \
+            --env-file .env.runtime \
             -v ${{ github.workspace }}/service_account.json:/app/service_account.json \
             sheets-scheduler
