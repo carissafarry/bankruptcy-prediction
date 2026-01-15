@@ -1,6 +1,7 @@
 import os
 import time
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from scraper.google_news import scrape_google_news
 
 import gspread
@@ -66,7 +67,7 @@ def push_data():
 
     existing_links = set(sheet.col_values(5))
     existing_link_map = get_existing_link_map(sheet)
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    now = datetime.now(ZoneInfo("Asia/Jakarta")).strftime("%Y-%m-%d %H:%M:%S")
 
     inserted = 0
     skipped = 0
