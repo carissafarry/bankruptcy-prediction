@@ -14,6 +14,7 @@ COL_PUBLISHED_AT = 3
 COL_SOURCE = 4
 COL_TITLE = 5
 COL_LINK = 6
+SCRAPING_LIMIT = 20
 
 def get_sheet():
     """
@@ -63,7 +64,7 @@ def push_data():
         return
 
     try:
-        articles = scrape_google_news(limit=5)
+        articles = scrape_google_news(limit=SCRAPING_LIMIT)
     except Exception as e:
         print("Scraping failed: ", e)
         return
