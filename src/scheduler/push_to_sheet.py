@@ -16,7 +16,7 @@ COL_YEAR = 5
 COL_QUARTER = 6
 COL_TITLE = 7
 COL_IS_NEGATIVE = 8
-COL_NEG_REASON = 9
+COL_NEG_KEYWORD = 9
 COL_LINK = 10
 SCRAPING_LIMIT = 50
 
@@ -118,6 +118,7 @@ def push_data():
         link = a.get("link")
         title = a.get("title")
         published_at = a.get("published_at")
+        is_negative, neg_keyword = check_negative_news(title)
 
         if not link or not title:
             print("Skipping invalid article: ", a)
@@ -129,13 +130,14 @@ def push_data():
             try:
                 sheet.update_cell(row_idx, COL_LAST_SEEN, last_seen_at)
                 sheet.update_cell(row_idx, COL_PUBLISHED_AT, published_at)
+                sheet.update_cell(row_idx, COL_IS_NEGATIVE, is_negative)
+                sheet.update_cell(row_idx, COL_NEG_KEYWORD, neg_keyword)
                 updated += 1
             except Exception as e:
                 print("Failed to update published_at: ", e)
                 skipped += 1
             continue
 
-        is_negative, neg_keyword = check_negative_news(title)
         row = [
             first_seen_at,
             last_seen_at,
