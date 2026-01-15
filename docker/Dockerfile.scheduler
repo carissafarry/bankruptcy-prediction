@@ -1,10 +1,12 @@
 FROM python:3.11-slim
 
-COPY requirements/scheduler.txt .
-COPY src/scheduler/push_to_sheet.py .
+WORKDIR /app
 
+# install dependencies
+COPY requirements/scheduler.txt ./scheduler.txt
 RUN pip install --no-cache-dir -r scheduler.txt
 
-WORKDIR /src
+# copy script
+COPY src/scheduler/push_to_sheet.py ./push_to_sheet.py
 
 CMD ["python", "push_to_sheet.py"]
