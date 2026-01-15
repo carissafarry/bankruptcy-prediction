@@ -20,7 +20,8 @@ def scrape_google_news(limit=10):
     soup = BeautifulSoup(resp.text, "html.parser")
 
     articles = []
-    cards = soup.select("article")
+    cards = soup.select("c-wiz.PO9Zff")
+    print(f"Found cards: {len(cards)}")
 
     for card in cards:
         # title + link
