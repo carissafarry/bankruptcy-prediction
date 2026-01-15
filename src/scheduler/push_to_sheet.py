@@ -135,8 +135,8 @@ def push_data():
                 "values": [[now]]
             })
             updates.append({
-                "range": f"E{row_idx}",   # published_at
-                "values": [[a["published_at"]]]
+                "range": f"C{row_idx}",   # published_at
+                "values": [[published_at]]
             })
             updated += 1
             continue
