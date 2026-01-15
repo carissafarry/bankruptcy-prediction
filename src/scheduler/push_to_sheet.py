@@ -12,8 +12,10 @@ COL_FIRST_SEEN = 1
 COL_LAST_SEEN = 2
 COL_PUBLISHED_AT = 3
 COL_SOURCE = 4
-COL_TITLE = 5
-COL_LINK = 6
+COL_YEAR = 5
+COL_QUARTER = 6
+COL_TITLE = 7
+COL_LINK = 8
 SCRAPING_LIMIT = 20
 
 def get_sheet():
@@ -108,6 +110,8 @@ def push_data():
             first_seen_at,
             last_seen_at,
             published_at,
+            a.get("year"),
+            a.get("quarter"),
             a.get("source"),
             title,
             link
