@@ -16,16 +16,19 @@ jobs:
       - name: Build docker scheduler image
         run: docker build -f docker/Dockerfile.scheduler -t sheets-scheduler .
 
-      - name: Debug creds file
-        run: |
-          cat service_account.json | head -n 5
-
-      - name: Run scheduler container
+      - name: Create Google service account file
         run: |
           cat << 'EOF' > service_account.json
           ${{ secrets.GOOGLE_CREDS }}
           EOF
 
+      - name: Debug creds file
+        run: |
+          ls -lah service_account.json
+          head -n 3 service_account.json
+
+      - name: Run scheduler container
+        run: |
           docker run --rm \
             -v ${{ github.workspace }}/service_account.json:/app/service_account.json \
             sheets-scheduler
