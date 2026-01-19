@@ -84,7 +84,7 @@ CONFIG = {
     "COL_LINK": get("COL_LINK", 11, int),
 
     # Scraping
-    "SCRAPING_LIMIT": get("SCRAPING_LIMIT", 50, int),
+    "SCRAPING_LIMIT": get("SCRAPING_LIMIT", 100, int),
     "NEGATIVE_KEYWORDS": NEGATIVE_KEYWORDS_FINAL,
 
     # Runtime

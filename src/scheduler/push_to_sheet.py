@@ -186,7 +186,7 @@ def push_data():
         ])
         inserted += 1
 
-    insert_success = False
+    insert_success = None
     if rows_to_insert:
         try:
             sheet.append_rows(
@@ -195,10 +195,11 @@ def push_data():
             )
             insert_success = True
         except Exception as e:
+            insert_success = False
             print("INSERT FAILED, SKIPPING UPDATE:", e)
             return
 
-    if insert_success and updates:
+    if insert_success == None and updates:
         try:
             sheet.batch_update(updates)
         except Exception as e:
