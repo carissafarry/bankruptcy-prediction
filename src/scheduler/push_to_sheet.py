@@ -1,4 +1,4 @@
-import os
+import os, re
 from config import CONFIG
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -44,7 +44,7 @@ def get_sheet():
     client = gspread.authorize(creds)
 
     sheet = client.open(CONFIG["SPREADSHEET_NAME"]).worksheet(CONFIG["SHEET_NAME"])
-    return sheet
+    return client, sheet
 
 def get_existing_link_map(sheet):
     """
@@ -58,9 +58,52 @@ def get_existing_link_map(sheet):
         if link
     }
 
+def load_emiten_map(client):
+    """
+    Read Sheet2 and return emiten map.
+    Expected columns:
+      symbol | keywords
+    """
+    emiten_sheet = client.open(CONFIG["SPREADSHEET_NAME"]).worksheet("Sheet2")
+    rows = emiten_sheet.get_all_records()
+
+    emiten_map = {}
+    for row in rows:
+        code = row["symbol"].upper()
+        keywords = [
+            k.strip().lower()
+            for k in row["keywords"].split(",")
+            if k.strip()
+        ]
+        emiten_map[code] = keywords
+
+    return emiten_map
+
+def detect_emiten(article, emiten_map):
+    text = f"{article.get('title','')} {article.get('source','')}".lower()
+
+    for code, keywords in emiten_map.items():
+        for kw in keywords:
+            if re.search(rf"\b{re.escape(kw)}\b", text):
+                return code
+    return None
+
+def col_to_a1(col_num: int) -> str:
+    """
+    1 -> A
+    26 -> Z
+    27 -> AA
+    28 -> AB
+    """
+    result = ""
+    while col_num > 0:
+        col_num, remainder = divmod(col_num - 1, 26)
+        result = chr(65 + remainder) + result
+    return result
+
 def push_data():
     try:
-        sheet = get_sheet()
+        client, sheet = get_sheet()
     except Exception as e:
         print("Failed to connect to Google Sheet: ", e)
         return
@@ -75,6 +118,7 @@ def push_data():
         print("No articles scraped")
         return
 
+    emiten_map = load_emiten_map(client)
     existing_link_map = get_existing_link_map(sheet)
     existing_links = set(existing_link_map.keys())
     now = datetime.now(ZoneInfo(CONFIG["TIMEZONE"])).strftime("%Y-%m-%d %H:%M:%S")
@@ -93,6 +137,7 @@ def push_data():
         title = a.get("title")
         published_at = a.get("published_at")
         is_negative, neg_keyword = check_negative_news(title)
+        emiten_code = detect_emiten(a, emiten_map)
 
         if not link or not title:
             print("Skipping invalid article: ", a)
@@ -102,11 +147,11 @@ def push_data():
         if link in existing_links:
             row_idx = existing_link_map[link]
             updates.append({
-                "range": f"B{row_idx}",   # last_seen_at
+                "range": f"{col_to_a1(CONFIG['COL_LAST_SEEN'])}{row_idx}",
                 "values": [[now]]
             })
             updates.append({
-                "range": f"C{row_idx}",   # published_at
+                "range": f"{col_to_a1(CONFIG['COL_PUBLISHED_AT'])}{row_idx}",
                 "values": [[published_at]]
             })
             updated += 1
@@ -130,6 +175,7 @@ def push_data():
             a.get("quarter"),
             a.get("source"),
             title,
+            emiten_code,
             is_negative,
             neg_keyword,
             link

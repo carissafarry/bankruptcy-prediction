@@ -77,10 +77,11 @@ CONFIG = {
     "COL_SOURCE": get("COL_SOURCE", 4, int),
     "COL_YEAR": get("COL_YEAR", 5, int),
     "COL_QUARTER": get("COL_QUARTER", 6, int),
-    "COL_TITLE": get("COL_TITLE", 7, int),
-    "COL_IS_NEGATIVE": get("COL_IS_NEGATIVE", 8, int),
-    "COL_NEG_KEYWORD": get("COL_NEG_KEYWORD", 9, int),
-    "COL_LINK": get("COL_LINK", 10, int),
+    "COL_SYMBOL": get("COL_SYMBOL", 7, int),
+    "COL_TITLE": get("COL_TITLE", 8, int),
+    "COL_IS_NEGATIVE": get("COL_IS_NEGATIVE", 9, int),
+    "COL_NEG_KEYWORD": get("COL_NEG_KEYWORD", 10, int),
+    "COL_LINK": get("COL_LINK", 11, int),
 
     # Scraping
     "SCRAPING_LIMIT": get("SCRAPING_LIMIT", 50, int),
