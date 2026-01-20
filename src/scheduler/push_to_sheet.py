@@ -155,6 +155,10 @@ def push_data():
                 "values": [[published_at]]
             })
             updates.append({
+                "range": f"{col_to_a1(CONFIG['COL_TITLE'])}{row_idx}",
+                "values": [[title]]
+            })
+            updates.append({
                 "range": f"{col_to_a1(CONFIG['COL_SYMBOL'])}{row_idx}",
                 "values": [[emiten_code]]
             })
