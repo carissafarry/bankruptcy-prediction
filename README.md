@@ -197,7 +197,6 @@ python run_pipeline.py
 - **`CODE_FLOW.md`** – Architecture, data pipeline, execution flows, threshold rationale, SDGs
 - **`CONFIGURATION.md`** – Full config reference, hyperparameters, input/output formats, troubleshooting
 - **`PIPELINE_USAGE.md`** – Quick-start examples, metrics interpretation, publication tips
-- **`RELEASE_NOTES_v1.0.md`** – Version history, changes
 
 ---
 
