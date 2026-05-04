@@ -2,7 +2,7 @@
 
 Production-ready ML pipeline for predicting bank insolvency across 5 horizons (1–5 years ahead) using 4 ensemble models.
 
-**Status**: Active | **Version**: 2.0.0 | **License**: MIT
+**Status**: Active | **Version**: 1.0.0 | **License**: Apache License 2.0
 
 ---
 
