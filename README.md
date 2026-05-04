@@ -201,6 +201,36 @@ python run_pipeline.py
 
 ---
 
+## Installation
+
+### Option 1: Docker (Recommended)
+
+```bash
+# Build image
+docker build -t bankruptcy-prediction .
+
+# Run container
+docker run -v $(pwd)/data:/app/data -v $(pwd)/output:/app/output bankruptcy-prediction python train_all_models.py
+
+# Or use docker-compose
+docker-compose up
+```
+
+### Option 2: Local Environment
+
+```bash
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run pipeline
+cd src
+python train_all_models.py
+```
+
 ## Dependencies
 
 ```
@@ -214,8 +244,6 @@ shap>=0.42.0
 matplotlib>=3.6.0
 seaborn>=0.12.0
 ```
-
-Install: `pip install -r requirements.txt`
 
 ---
 

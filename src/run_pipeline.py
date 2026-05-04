@@ -48,7 +48,11 @@ def train_all_models(data_path: str, output_dir: str):
         models_dict = {}
         for horizon in range(1, 6):
             (X_train, y_train), (X_val, y_val), (X_test, y_test, df_test_meta) = split_by_horizon(df_h, horizon)
-            model, threshold = train_fn(X_train, y_train, X_val, y_val, hardcode_threshold=0.4)
+            result = train_fn(X_train, y_train, X_val, y_val, hardcode_threshold=0.4)
+            if model_name == "xgboost":
+                model, threshold, best_params = result
+            else:
+                model, threshold = result
 
             from training_utils import evaluate_and_export
             evaluate_and_export(model, X_test, y_test, df_test_meta, horizon, threshold, export_key, str(model_output_dir))
