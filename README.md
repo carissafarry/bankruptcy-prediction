@@ -88,7 +88,7 @@ FEATURE_COLS = [
 ]
 ```
 
-See `CONFIGURATION.md` for full reference (hyperparameters, input format, output schema).
+See [CONFIGURATION.md](CONFIGURATION.md) for full reference (hyperparameters, input format, output schema).
 
 ---
 
@@ -136,22 +136,25 @@ All models:
    - Class imbalance: 24.5% distressed, 75.5% solvent
    - Prioritizes recall (catch distress) over precision
    - Reproducible & explainable (not per-horizon tuned)
-   - See `CODE_FLOW.md` for rationale
+   - See [CODE_FLOW.md](CODE_FLOW.md) § "Threshold Rationale" for rationale
 
 2. **Time-Based Splits**
    - Train: 2014–2019 | Val: 2020–2021 | Test: 2022–2023
    - Prevents temporal leakage (financial data has sequences)
    - Test uses most recent data (production-like)
+   - See [CODE_FLOW.md](CODE_FLOW.md) § "Data Pipeline"
 
 3. **Sequential Model Training**
    - Each model trains across all 5 horizons before moving to next
    - Memory-efficient + failure visibility
    - Unified logging across all models
+   - See [CODE_FLOW.md](CODE_FLOW.md) § "Execution Flows"
 
 4. **Consolidated Hyperparameters**
    - XGBoost: all iterations logged; best params saved to JSON per horizon
    - NGBoost/RF/LightGBM: fixed configs logged per horizon
    - Enables full reproducibility
+   - See [CONFIGURATION.md](CONFIGURATION.md) § "Model Hyperparameters"
 
 ---
 
@@ -194,9 +197,10 @@ python run_pipeline.py
 
 ## Documentation
 
-- **`CODE_FLOW.md`** – Architecture, data pipeline, execution flows, threshold rationale, SDGs
-- **`CONFIGURATION.md`** – Full config reference, hyperparameters, input/output formats, troubleshooting
-- **`PIPELINE_USAGE.md`** – Quick-start examples, metrics interpretation, publication tips
+- **[CODE_FLOW.md](CODE_FLOW.md)** – Architecture, data pipeline, execution flows, threshold rationale, SDGs
+- **[CONFIGURATION.md](CONFIGURATION.md)** – Full config reference, hyperparameters, input/output formats, troubleshooting
+- **[PIPELINE_USAGE.md](PIPELINE_USAGE.md)** – Quick-start examples, metrics interpretation, publication tips
+- **[CITATION.cff](CITATION.cff)** – Citation format for academic use
 
 ---
 
@@ -256,13 +260,13 @@ seaborn>=0.12.0
 
 ## License
 
-Apache 2.0 License – See LICENSE file
+Apache 2.0 License – See [LICENSE](LICENSE) file
 
 ---
 
 ## Support
 
 For issues or questions:
-- Check `CONFIGURATION.md` troubleshooting section
-- Review `CODE_FLOW.md` for architecture details
+- Check [CONFIGURATION.md](CONFIGURATION.md) troubleshooting section
+- Review [CODE_FLOW.md](CODE_FLOW.md) for architecture details
 - Open an issue on GitHub
