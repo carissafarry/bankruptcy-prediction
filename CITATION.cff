@@ -1,0 +1,49 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Farry
+    given-names: Carissa
+    affiliation: "Universitas Bina Nusantara"
+    email: "carissa.zahra001@binus.ac.id"
+title: "Bankruptcy Prediction Pipeline: Multi-Horizon Bank Insolvency Forecasting"
+abstract: "Production-ready machine learning pipeline for predicting bank insolvency across 5 horizons (1–5 years ahead) using 4 ensemble models (NGBoost, Random Forest, XGBoost, LightGBM). The system integrates financial statement analysis, time-based train/validation/test splitting to prevent temporal leakage, and class imbalance handling for accurate distress prediction. Features hardcoded 0.4 threshold optimized for 75% recall, comprehensive SHAP explainability across all model types, and standardized CSV output with risk buckets and confusion matrix analysis. Implements SDG 8, 10, 16 alignment for financial stability, economic growth, and institutional strength in developing economies."
+repository-code: "https://github.com/carissafarry/bankruptcy-prediction"
+url: "https://github.com/carissafarry/bankruptcy-prediction"
+version: "v1.0.0"
+date-released: "2026-05-04"
+license: APACHE 2.0
+keywords:
+  - "bankruptcy prediction"
+  - "bank insolvency"
+  - "financial distress forecasting"
+  - "ensemble machine learning"
+  - "XGBoost"
+  - "LightGBM"
+  - "NGBoost"
+  - "Random Forest"
+  - "SHAP explainability"
+  - "time-series analysis"
+  - "class imbalance handling"
+  - "credit risk assessment"
+  - "financial ratios"
+  - "regulatory risk management"
+  - "production pipeline"
+  - "reproducible research"
+  - "decision support system"
+  - "sustainable development goals"
+contact:
+  - family-names: Farry
+    given-names: Carissa
+    email: "carissa.zahra001@binus.ac.id"
+preferred-citation:
+  type: software
+  authors:
+    - family-names: Farry
+      given-names: Carissa
+  title: "Bankruptcy Prediction Pipeline: Multi-Horizon Bank Insolvency Forecasting"
+  version: "v1.0.0"
+  url: "https://github.com/carissafarry/bankruptcy-prediction"
+  year: 2026
+  publisher:
+    name: "GitHub"
