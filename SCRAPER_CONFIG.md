@@ -29,6 +29,10 @@ The Google News Scraper (`src/scraper/`) is an auxiliary data collection tool:
 
 ---
 
+You can see the scraped data example in this [link](https://docs.google.com/spreadsheets/d/1FtF2eqaVKxTKYleJe1FkbVeIfR7DojqKNcd5AhXiZBA/edit?usp=sharing).
+
+---
+
 ## Components
 
 ### 1. Google News Scraper (`src/scraper/google_news.py`)
