@@ -1,5 +1,7 @@
 # Bankruptcy Prediction Pipeline
 
+[![DOI](https://zenodo.org/badge/1100609856.svg)](https://doi.org/10.5281/zenodo.20024253)
+
 Production-ready ML pipeline for predicting bank insolvency across 5 horizons (1–5 years ahead) using 4 ensemble models.
 
 **Status**: Active | **Version**: 1.0.0 | **License**: Apache License 2.0
