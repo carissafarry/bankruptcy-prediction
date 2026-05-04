@@ -1,1 +1,3 @@
 service_account.json
+/src/output
+/src/__pycache__/*
