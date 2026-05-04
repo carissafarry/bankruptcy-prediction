@@ -256,7 +256,7 @@ seaborn>=0.12.0
 
 ## License
 
-MIT License – See LICENSE file
+Apache 2.0 License – See LICENSE file
 
 ---
 
