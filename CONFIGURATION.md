@@ -38,7 +38,7 @@ HARDCODED_THRESHOLD = 0.4  # Do NOT tune per horizon; fixed for stability
 
 ### Hardcoded Threshold = 0.4
 
-**See CODE_FLOW.md § "Threshold Rationale" for detailed explanation of why 0.4.**
+**See [CODE_FLOW.md](CODE_FLOW.md) § "Threshold Rationale" for detailed explanation of why 0.4.**
 
 Quick reference:
 - Fixed at 0.4 due to class imbalance (24.5% positive)
@@ -69,7 +69,7 @@ Validation:  2020–2021 (threshold tuning, if needed)
 Test:        2022–2023 (final evaluation, production-like)
 ```
 
-**See CODE_FLOW.md § "Data Pipeline" for rationale on temporal leakage prevention.**
+**See [CODE_FLOW.md](CODE_FLOW.md) § "Data Pipeline" for rationale on temporal leakage prevention.**
 
 Quick: Financial data has sequences → random shuffle leaks future info into training.
 
@@ -233,7 +233,7 @@ distress_actual, prob_distress, pred_label, distance_to_threshold,
 model_name, threshold_used, risk_bucket, confusion_type
 ```
 
-**Column Meanings (see CODE_FLOW.md § "Data Export Format" for details):**
+**Column Meanings (see [CODE_FLOW.md](CODE_FLOW.md) § "Data Export Format" for details):**
 - `tanggal`: Quarter-end date (DD/MM/YYYY) for dashboard filtering
 - `prob_distress`: Model probability [0, 1]
 - `pred_label`: Binary prediction (1 if prob ≥ 0.4, else 0)
