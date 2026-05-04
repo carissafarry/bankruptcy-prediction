@@ -20,7 +20,7 @@ python run_pipeline.py \
 
 ## Pipeline Stages
 
-**See CODE_FLOW.md for detailed architecture & execution flows.**
+**See [CODE_FLOW.md](CODE_FLOW.md) for detailed architecture & execution flows.**
 
 ### Stage 1: Model Training
 - Trains NGBoost, Random Forest, XGBoost, LightGBM on 5 horizons (1–5 years)
@@ -33,7 +33,7 @@ python run_pipeline.py \
 
 ## Modules
 
-**See CODE_FLOW.md § "Model Configuration" for module details.**
+**See [CODE_FLOW.md](CODE_FLOW.md) § "Model Configuration" for module details.**
 
 - **`training_utils.py`** – Shared config, data loading, all 4 training functions, evaluation/export
 - **`train_single_model.py`** – CLI: train single model across all horizons
@@ -43,7 +43,7 @@ python run_pipeline.py \
 
 ## Configuration
 
-**See CONFIGURATION.md for full reference.**
+**See [CONFIGURATION.md](CONFIGURATION.md) for full reference.**
 
 Key constants in `training_utils.py`:
 ```python
