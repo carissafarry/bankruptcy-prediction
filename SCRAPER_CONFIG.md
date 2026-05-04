@@ -26,9 +26,6 @@ The Google News Scraper (`src/scraper/`) is an auxiliary data collection tool:
 **Skip scraper if**:
 - You only care about bankruptcy prediction
 - You have financial data already
-- You're submitting to Zenodo (not essential)
-
-**For Zenodo submission**: Exclude scraper, include only prediction model.
 
 ---
 
